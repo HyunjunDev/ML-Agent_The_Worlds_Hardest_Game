@@ -1,0 +1,48 @@
+{
+    "HardestGame": {
+        "checkpoints": [
+            {
+                "steps": 3499978,
+                "file_path": "results\\test1\\HardestGame\\HardestGame-3499978.onnx",
+                "reward": -3.302723496688479,
+                "creation_time": 1677346187.6008341
+            },
+            {
+                "steps": 3999987,
+                "file_path": "results\\test1\\HardestGame\\HardestGame-3999987.onnx",
+                "reward": -3.3041417653391347,
+                "creation_time": 1677347281.546162
+            },
+            {
+                "steps": 4499981,
+                "file_path": "results\\test1\\HardestGame\\HardestGame-4499981.onnx",
+                "reward": -3.272975961509205,
+                "creation_time": 1677348356.212865
+            },
+            {
+                "steps": 4999995,
+                "file_path": "results\\test1\\HardestGame\\HardestGame-4999995.onnx",
+                "reward": -3.3339283264109065,
+                "creation_time": 1677349449.803265
+            },
+            {
+                "steps": 5000116,
+                "file_path": "results\\test1\\HardestGame\\HardestGame-5000116.onnx",
+                "reward": -3.3158330897490185,
+                "creation_time": 1677349449.936908
+            }
+        ],
+        "final_checkpoint": {
+            "steps": 5000116,
+            "file_path": "results\\test1\\HardestGame.onnx",
+            "reward": -3.3158330897490185,
+            "creation_time": 1677349449.936908
+        }
+    },
+    "metadata": {
+        "stats_format_version": "0.2.0",
+        "mlagents_version": "0.23.0",
+        "torch_version": "1.7.1+cu110",
+        "tensorflow_version": -1
+    }
+}

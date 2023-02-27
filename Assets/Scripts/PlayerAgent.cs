@@ -11,7 +11,10 @@ public class PlayerAgent : Agent
     private float speed = 5f;
 
     private Transform agentPos;
+    private Transform goalPos;
     private Vector2 startPos;
+
+    private float preDist;
 
     private Rigidbody2D rb;
 
@@ -19,6 +22,7 @@ public class PlayerAgent : Agent
     {
         base.Initialize();
         rb = GetComponent<Rigidbody2D>();
+        goalPos = GameObject.Find("Goal").transform;
         agentPos = transform;
         startPos = transform.position;
     }
@@ -26,10 +30,10 @@ public class PlayerAgent : Agent
     public override void CollectObservations(VectorSensor sensor)
     {
         sensor.AddObservation(agentPos.position);
+        sensor.AddObservation(goalPos.position);
         sensor.AddObservation(rb.velocity);
     }
 
-    Vector3 vel = Vector3.zero;
     public override void OnActionReceived(ActionBuffers actionsBuffer)
     {
         AddReward(-0.01f);
@@ -39,14 +43,29 @@ public class PlayerAgent : Agent
         float moveY = Mathf.Clamp(actions[0], -1, 1f);
         float moveX = Mathf.Clamp(actions[1], -1, 1f);
 
-        vel = new Vector3(moveX, moveY, 0).normalized;
+        Vector3 vel = new Vector3(moveX, moveY, 0).normalized;
         rb.velocity = vel * speed;
+
+        float distance = Vector3.Magnitude(goalPos.position - agentPos.position);
+        if (distance <= 0.5f)
+        {
+            SetReward(10f);
+            EndEpisode();
+        }
+        else
+        {
+            float reward = preDist - distance;
+            AddReward(reward);
+            preDist = distance;
+        }
     }
 
     public override void OnEpisodeBegin()
     {
         base.OnEpisodeBegin();
+        GameManager.Instance.SetDeathText();
         agentPos.position = startPos;
+        preDist = Vector3.Magnitude(goalPos.position - agentPos.position);
     }
 
     public override void Heuristic(in ActionBuffers actionsOut)
@@ -64,11 +83,6 @@ public class PlayerAgent : Agent
             SetReward(-1f);
             GameManager.Instance.death += 1;
             EndEpisode();
-        }
-        else if(collision.gameObject.CompareTag("Goal"))
-        {
-            AddReward(1f);
-            GameManager.Instance.NextScene();
         }
     }
 

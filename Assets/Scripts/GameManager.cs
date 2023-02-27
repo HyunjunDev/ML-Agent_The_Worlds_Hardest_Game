@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
@@ -9,9 +10,7 @@ public class GameManager : MonoBehaviour
 
     public int death = 0;
 
-    public List<string> sceneList = new List<string>();
-
-    private int curLevel = 0;
+    public Text deathText;
 
     public static GameManager Instance
     {
@@ -31,24 +30,17 @@ public class GameManager : MonoBehaviour
     private void Awake()
     {
         instance = this;
+        SetDeathText();
         DontDestroyOnLoad(this.gameObject);
-        for (int i = 0; i < SceneManager.sceneCountInBuildSettings; i++)
-        {
-            sceneList.Add(System.IO.Path.GetFileNameWithoutExtension(SceneUtility.GetScenePathByBuildIndex(i)));
-        }
     }
 
-    public void NextScene()
+    public void SetDeathText()
     {
-        curLevel++;
-        int nextLevel = curLevel;
-        if(nextLevel >= sceneList.Count)
-        {
-            Application.Quit();
-        }
-        else
-        {
-            SceneManager.LoadScene(sceneList[nextLevel]);
-        }
+        deathText.text = "Death : " + death;
+    }
+
+    public void SceneLoad()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 }

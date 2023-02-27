@@ -7,8 +7,8 @@ public class HorizontalEnemy : MonoBehaviour
     [SerializeField]
     private float speed = 10f;
 
-    [SerializeField]
-    private bool isRight = false;
+    public Transform[] moveSpot;
+    public int curSpot = 0;
     // Start is called before the first frame update
     void Start()
     {
@@ -18,17 +18,10 @@ public class HorizontalEnemy : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (!isRight)
-            transform.position += Vector3.right * speed * Time.deltaTime;
-        else
-            transform.position += Vector3.left * speed * Time.deltaTime;
-    }
-
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        if (collision.CompareTag("EnemyWall"))
+        transform.position = Vector2.MoveTowards(transform.position, moveSpot[curSpot].position, speed * Time.deltaTime);
+        if (Vector2.Distance(transform.position, moveSpot[curSpot].position) < 0.1f)
         {
-            isRight = !isRight;
+            curSpot = (curSpot + 1) % moveSpot.Length;
         }
     }
 }
